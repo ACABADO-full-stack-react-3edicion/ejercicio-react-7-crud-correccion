@@ -1,24 +1,59 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { Col, Container, Form, Row } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import { Formulario } from "./componentes/Formulario";
+import { Listado } from "./componentes/Listado";
 
 function App() {
+  const [formularioAbierto, setFormularioAbierto] = useState(null);
+  const [tipos, setTipos] = useState([]);
+  const idMasAlta = tipos
+    .map((tipo) => tipo.id)
+    .reduce((acumulador, id) => (id > acumulador ? id : acumulador), 0);
+  const nuevoTipo = (tipo) => {
+    setTipos([...tipos, tipo]);
+  };
+  const borrarTipo = (tipo) => {
+    setTipos(tipos.filter((tipoGato) => tipoGato.id !== tipo.id));
+  };
+  const editarTipo = (tipo) => {
+    setTipos(
+      tipos.map((tipoGato) => {
+        if (tipoGato.id === tipo.id) {
+          return {
+            ...tipoGato,
+            tipo: tipo.tipo,
+          };
+        } else {
+          return tipoGato;
+        }
+      })
+    );
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className="contenedor">
+      <Row as="header">
+        <Col as="h1">Tipos de gatos</Col>
+      </Row>
+      <Row as="main">
+        {formularioAbierto ? (
+          <Formulario
+            formularioAbierto={formularioAbierto}
+            idMasAlta={idMasAlta}
+            nuevoTipo={nuevoTipo}
+            editarTipo={editarTipo}
+            setFormularioAbierto={setFormularioAbierto}
+          />
+        ) : (
+          <Listado
+            tipos={tipos}
+            formularioAbierto={formularioAbierto}
+            borrarTipo={borrarTipo}
+            setFormularioAbierto={setFormularioAbierto}
+          />
+        )}
+      </Row>
+    </Container>
   );
 }
 
