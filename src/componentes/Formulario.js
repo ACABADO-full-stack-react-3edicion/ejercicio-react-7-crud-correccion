@@ -4,13 +4,8 @@ import { useState } from "react";
 import { Button, Col, Form } from "react-bootstrap";
 
 export const Formulario = (props) => {
-  const {
-    formularioAbierto,
-    setFormularioAbierto,
-    nuevoTipo,
-    editarTipo,
-    idMasAlta,
-  } = props;
+  const { formularioAbierto, setFormularioAbierto, nuevoTipo, editarTipo } =
+    props;
   const editando = !!formularioAbierto.id;
   const [tipo, setTipo] = useState(editando ? formularioAbierto.tipo : "");
   const textoBoton = editando ? "Editar" : "Crear";
@@ -30,7 +25,6 @@ export const Formulario = (props) => {
       });
     } else {
       nuevoTipo({
-        id: idMasAlta + 1,
         tipo,
       });
     }
